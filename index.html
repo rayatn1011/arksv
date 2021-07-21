@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>春櫻之城 官方網站</title>
+
+    <link rel="stylesheet" href="plugin/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="plugin/fontello/css/fontello.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div id="app">
+        <!-- header -->
+        <header id="header">
+            <div class="container-full d-flex justify-content-between align-items-center">
+                <h1>
+                    <a href="index.html">
+                        <img src="img/logo.png" alt="LOGO" class="logo-img">
+                    </a>
+                </h1>
+                <nav class="d-flex align-items-center">
+                    <ul class="d-flex align-items-center">
+                        <li v-for="item in linkList.nav">
+                            <a :href="item.url" :alt="item.name" :class="{ unopen : !item.open }">{{ item.name }}</a>
+                        </li>
+
+                    </ul>
+                    <button id="btn-login-signup" @click="acountModalToggle" v-if="!account.islogin">
+                        登入 / 註冊
+                    </button>
+                    <div id="account" v-else>
+                        <button id="btn-account" @click="picked.accountBlock =!picked.accountBlock"><i class="icon-acount"></i>帳戶</button>
+                        <transition name="fade" mode="out-in">
+                            <div id="userModal" class="shadow" v-if="picked.accountBlock">
+                                <div class="modal-content d-flex flex-column justify-content-center align-items-center">
+                                    <div class="user-name">{{ account.userName }}</div>
+                                    <div class="user-coin">{{ account.coin }}</div>
+                                    <div class="coin-name">櫻花幣</div>
+                                    <button id="btn-logout"　@click="gotoLogout">登出</button>
+                                </div>
+                            </div>
+                        </transition>
+                    </div>
+                </nav>
+            </div>
+
+
+        </header>
+
+        <!-- main -->
+        <main id="main">
+            <section id="banner">
+                <div class="banner-block">
+                </div>
+                <div id="baner-text" class="d-flex flex-column align-items-center justify-content-center">
+                    <h2>歡迎來到</h2>
+                    <h2>春櫻之城官方網站</h2>
+                    <h2>本網站目前測試中，僅開放交易市集</h2>
+                </div>
+            </section>
+            <section id="intro-DC">
+                <div class="container">
+                    <div class="row gy-5 align-items-center justify-content-between">
+                        <div class="col-12 col-lg-6">
+                            <h2>最新的遊戲消息</h2>
+                            <p>不管是伺服器獨家的限時活動，還是各地圖的維修通知，都可以在Discord看到最新消息。</p>
+                        </div>
+                        <div class="col-12 col-lg-5">
+                            <img src="img/index/dc-intro.jpg" alt="春櫻之城-Discord">
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <iframe src="https://discordapp.com/widget?id=781422087066746890&theme=dark" width="100%" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <h2>豐富的社群分享</h2>
+                            <p>多名玩家隨時在線上，不管你是想問遊戲問題，還是想秀出你的生猛霸王龍，先進來再說！</p>
+                            <a class="link-dc" :href="linkList.external[0].url" target="_blank" :alt="linkList.external[0].name">
+                                <i :class="linkList.external[0].icon" class="me-3"></i>春櫻之城Discord社群</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="feedback">
+                <div class="container-full">
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-12 col-lg-5">
+                            <div class="img-feedback"></div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <div class="feedback-block">
+                                <h2>匿名意見表</h2>
+                                <p>我們很重視玩家的想法，也同時保障你的隱私，若有任何的建議，都請放心地說出來。</p>
+                                <a class="link-feedback" :href="linkList.external[1].url" target="_blank" :alt="linkList.external[1].name">
+                                    <i :class="linkList.external[1].icon" class="me-3"></i>說出你的想法</a>
+                            </div>
+                        </div>
+    
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Modal -->
+            <div class="modal fade" id="acountModal" tabindex="-1" aria-labelledby="acountModalLabel" aria-hidden="true"
+                data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header flex-wrap justify-content-center">
+                            <div class="w-100">
+                                <button type="button" class="btn-shout-down d-block ms-auto" data-bs-dismiss="modal"
+                                    aria-label="Close"><span></span><span></span></button>
+                            </div>
+                            <div class="logo">
+                                <img src="img/logo.png" alt="LOGO">
+                            </div>
+                        </div>
+                        <div class="modal-body d-flex justify-content-center flex-wrap">
+                            <div id="switch-block" class="d-flex justify-content-center w-100">
+                                <button @click="picked.loginBlock = true;errorInfo.signupError='' "
+                                    :class="{ isactive: picked.loginBlock }">帳號登入</button>
+                                <button @click="picked.loginBlock = false;errorInfo.loginError='' "
+                                    :class="{ isactive: !picked.loginBlock }">帳號註冊</button>
+                            </div>
+                            <div id="content-block" class="w-100">
+                                <transition name="fade" mode="out-in">
+                                    <div class="login-block" v-if="picked.loginBlock" key="login">
+                                        <label for="loginId">登入ID</label>
+                                        <input type="text" placeholder="請輸入遊戲ID(樣本植入體)" id="loginId">
+                                        <label for="loginPassword">登入密碼</label>
+                                        <input type="password" placeholder="請輸入密碼" id="loginPassword">
+                                        <div id="login-error" :class="{ show : (errorInfo.loginError!='') ,'error-shaking': (errorInfo.loginError!='') }">
+                                            {{ errorInfo.loginError }}
+                                        </div>
+                                        <button id="btn-login" @click="gotoLogin">
+                                            帳號登入
+                                        </button>
+                                    </div>
+                                    <div class="signup-block" v-else key="signup">
+                                        <label for="signupGameId">遊戲ID（網站登入ID）</label>
+                                        <input type="text" placeholder="請輸入遊戲ID(樣本植入體)" id="signupGameId">
+                                        <label for="signupPassword">密碼</label>
+                                        <input type="password" placeholder="請輸入密碼" id="signupPassword">
+                                        <label for="signupPasswordDobulecheck">密碼確認</label>
+                                        <input type="password" placeholder="請再次輸入密碼" id="signupPasswordDobulecheck">
+                                        <label for="signupUserName">用戶名稱</label>
+                                        <input type="text" placeholder="請輸入用戶名稱" id="signupId">
+
+                                        <label for="signupDiscordId">Discord名稱</label>
+                                        <input type="text" placeholder="輸入Discord名稱" id="signupDiscordId">
+                                        <label for="signupEmail">電子郵件</label>
+                                        <input type="text" placeholder="請輸入電子郵件" id="signupEmail">
+                                        <div id="signup-error" :class="{ show : (errorInfo.signupError!='') ,'error-shaking': (errorInfo.signupError!='') }">
+                                            {{ errorInfo.signupError }}
+                                        </div>
+                                        <button id="btn-signup" @click="gotoSignup">
+                                            帳號註冊
+                                        </button>
+                                    </div>
+                                </transition>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer id="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-5">
+                        <div class="logo-block">
+                            <div class="logo">
+                                <img src="img/logo-w.png" alt="LOGO">
+                            </div>
+                            <h3>方舟：生存進化伺服器</h3>
+                            <h5>Copyright © 2021 Town of Sakura.</h5>
+                        </div>
+                    </div>
+                    <div class="col-7">
+                        <div class="row footer-content gy-5">
+                            <div class="col-6">
+                                <div class="sitemap-block">
+                                    <h3>網站導覽</h3>
+                                    <ul>
+                                        <li v-for="item in linkList.nav">
+                                            <a :href="item.url" :alt="item.name" :class="{ unopen : (!item.open)}">
+                                                {{ item.name }}
+                                                <span v-if="(!item.open)">(尚未開放)</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="external-block">
+                                    <h3>外部連結</h3>
+                                    <ul>
+                                        <li v-for="item in linkList.external">
+                                            <a :href="item.url" :alt="item.name" target="_blank">
+                                                <i :class="item.icon" class="me-2"></i>{{ item.name }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="serviceProvider-block">
+                                    <h3>網站維護</h3>
+                                    <ul>
+                                        <li>管理員：冰的熱拿鐵、asd456uu</li>
+                                        <li>網站工程師：☆Rainbow·catjennie☆、狐狸乎離</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </footer>
+    </div>
+
+
+
+
+    <!-- script -->
+    <script src="plugin/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="plugin/vue/vue.js"></script>
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.10.1/qs.min.js"></script>
+    <script src="plugin/axios/axios.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

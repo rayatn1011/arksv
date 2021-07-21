@@ -1,0 +1,672 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap");
+[v-cloak] {
+  display: none;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+*:focus {
+  outline: 0;
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(226, 127, 136, 0.6);
+          box-shadow: 0 0 0 0.2rem rgba(226, 127, 136, 0.6);
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  color: #333;
+  vertical-align: baseline;
+  font-family: 'Noto Sans TC', sans-serif;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+::-webkit-input-placeholder {
+  color: #999;
+}
+
+:-ms-input-placeholder {
+  color: #999;
+}
+
+::-ms-input-placeholder {
+  color: #999;
+}
+
+::placeholder {
+  color: #999;
+}
+
+img {
+  width: 100%;
+}
+
+a {
+  display: inline-block;
+}
+
+i {
+  color: inherit;
+  font-size: 1.5em;
+  vertical-align: sub;
+}
+
+#header {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.9);
+  -webkit-box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+#header h1 {
+  padding: 20px 0;
+}
+
+#header h1 .logo-img {
+  width: 160px;
+}
+
+#header nav ul {
+  gap: 30px;
+}
+
+#header nav ul a {
+  position: relative;
+  padding: 5px 5px;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #555;
+  letter-spacing: 2px;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+}
+
+#header nav ul a::after {
+  position: absolute;
+  content: "";
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: -webkit-gradient(linear, left top, right top, color-stop(50%, #E27F88), color-stop(50%, transparent));
+  background: linear-gradient(to right, #E27F88 50%, transparent 50%);
+  background-size: 201% 100%;
+  background-position: right;
+  -webkit-transition: background 0.4s;
+  transition: background 0.4s;
+}
+
+#header nav ul a:hover {
+  color: #E27F88;
+}
+
+#header nav ul a:hover::after {
+  background-position: left;
+}
+
+#header nav ul .unopen {
+  position: relative;
+  pointer-events: none;
+  color: #999;
+}
+
+#header nav ul .unopen::after {
+  position: absolute;
+  width: 100%;
+  top: 80%;
+  content: "(暫未啟用)";
+  font-size: 0.7em;
+  font-weight: normal;
+  text-align: center;
+}
+
+#header nav #btn-login-signup, #header nav #btn-account {
+  border-radius: 3em;
+  margin-left: 60px;
+  padding: 10px 20px;
+  font-size: 1.5em;
+  font-weight: bold;
+  letter-spacing: 2px;
+  -webkit-transition: background 0.25s;
+  transition: background 0.25s;
+}
+
+#header nav #btn-login-signup:hover, #header nav #btn-account:hover {
+  background: #BE6B72;
+}
+
+#header nav #btn-login-signup {
+  border: none;
+  color: #FFF;
+  background: #E27F88;
+}
+
+#header nav #account {
+  position: relative;
+}
+
+#header nav #account #btn-account {
+  border: 3px solid #E27F88;
+  font-size: 1.2em;
+  color: #E27F88;
+  background: transparent;
+  -webkit-transition: color 0.25s, background 0.25s;
+  transition: color 0.25s, background 0.25s;
+}
+
+#header nav #account #btn-account:hover {
+  color: #FFF;
+  background: #E27F88;
+}
+
+#header nav #account #btn-account i {
+  font-size: 1.1em;
+  vertical-align: baseline;
+  margin-right: 4px;
+}
+
+#header nav #account #userModal {
+  width: 220px;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 20px);
+}
+
+#header nav #account #userModal .modal-content {
+  position: relative;
+  border-radius: 0.5em;
+  border: 2px solid #555;
+  padding: 20px 0 10px;
+  background: #333;
+}
+
+#header nav #account #userModal .modal-content .user-name {
+  width: 100%;
+  border-bottom: 2px solid #555;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+  color: #E27F88;
+}
+
+#header nav #account #userModal .modal-content .user-name::after {
+  content: "";
+  position: absolute;
+  right: 32px;
+  top: -14px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 14px solid #333;
+}
+
+#header nav #account #userModal .modal-content .user-coin {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #FFF;
+}
+
+#header nav #account #userModal .modal-content .coin-name {
+  font-size: 1.2em;
+  color: #999;
+}
+
+#header nav #account #userModal .modal-content #btn-logout {
+  border-radius: 2em;
+  border: 3px solid #E27F88;
+  margin-top: 20px;
+  padding: 5px 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #E27F88;
+  background: transparent;
+  -webkit-transition: color 0.25s,background 0.25s;
+  transition: color 0.25s,background 0.25s;
+}
+
+#header nav #account #userModal .modal-content #btn-logout:hover {
+  color: #FFF;
+  background: #E27F88;
+}
+
+#main section h2 {
+  margin-bottom: 20px;
+  font-size: 3em;
+  font-weight: bold;
+}
+
+#main section p {
+  font-size: 1.5em;
+}
+
+#main #banner .banner-block {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: -1;
+}
+
+#main #banner .banner-block::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-blend-mode: darken;
+  background-color: rgba(0, 0, 0, 0.5);
+  background-image: url(../img/中文3.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+#main #banner #baner-text h2 {
+  color: #FFF;
+  font-weight: bold;
+  letter-spacing: 8px;
+}
+
+#main #banner #baner-text h2:nth-child(1) {
+  font-size: 2em;
+  margin-bottom: 30px;
+}
+
+#main #banner #baner-text h2:nth-child(2) {
+  font-size: 3em;
+  margin-bottom: 40px;
+}
+
+#main #banner #baner-text h2:nth-child(3) {
+  font-size: 1.2em;
+  padding: 10px 80px;
+  background: -webkit-gradient(linear, left top, right top, from(rgba(226, 127, 136, 0)), color-stop(10%, rgba(226, 127, 136, 0.8)), color-stop(90%, rgba(226, 127, 136, 0.8)), to(rgba(226, 127, 136, 0)));
+  background: linear-gradient(to right, rgba(226, 127, 136, 0) 0%, rgba(226, 127, 136, 0.8) 10%, rgba(226, 127, 136, 0.8) 90%, rgba(226, 127, 136, 0) 100%);
+}
+
+#main #intro-DC {
+  padding: 150px 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  background-blend-mode: lighten;
+  background-image: url(../img/index/dc-bg.jpg);
+  background-position: center;
+  background-size: cover;
+}
+
+#main #intro-DC .link-dc {
+  display: inline-block;
+  border-radius: 8px;
+  margin-top: 60px;
+  padding: 20px 40px;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #FFF;
+  background: #5865F2;
+  -webkit-box-shadow: inset 0px -4px 0px 4px rgba(0, 0, 0, 0.16);
+          box-shadow: inset 0px -4px 0px 4px rgba(0, 0, 0, 0.16);
+  -webkit-transition: background 0.25s, -webkit-box-shadow 0.25s;
+  transition: background 0.25s, -webkit-box-shadow 0.25s;
+  transition: box-shadow 0.25s, background 0.25s;
+  transition: box-shadow 0.25s, background 0.25s, -webkit-box-shadow 0.25s;
+}
+
+#main #intro-DC .link-dc:hover {
+  background: #4A55CB;
+  -webkit-box-shadow: inset 0px 0px 0px 2px rgba(0, 0, 0, 0.16);
+          box-shadow: inset 0px 0px 0px 2px rgba(0, 0, 0, 0.16);
+}
+
+#main #feedback {
+  padding: 150px 0;
+}
+
+#main #feedback .img-feedback {
+  width: 100%;
+  border-radius: 8px;
+  padding-bottom: 80%;
+  background: url(../img/index/feedback.jpg);
+  background-position: center;
+  background-size: cover;
+}
+
+#main #feedback .feedback-block {
+  width: 80%;
+  margin: 0 auto;
+}
+
+#main #feedback .feedback-block .link-feedback {
+  display: inline-block;
+  border-radius: 8px;
+  margin-top: 60px;
+  padding: 20px 40px;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #FFF;
+  background: #E27F88;
+  -webkit-box-shadow: inset 0px -4px 0px 4px rgba(0, 0, 0, 0.16);
+          box-shadow: inset 0px -4px 0px 4px rgba(0, 0, 0, 0.16);
+  -webkit-transition: background 0.25s, -webkit-box-shadow 0.25s;
+  transition: background 0.25s, -webkit-box-shadow 0.25s;
+  transition: box-shadow 0.25s, background 0.25s;
+  transition: box-shadow 0.25s, background 0.25s, -webkit-box-shadow 0.25s;
+}
+
+#main #feedback .feedback-block .link-feedback:hover {
+  background: #BE6B72;
+  -webkit-box-shadow: inset 0px 0px 0px 2px rgba(0, 0, 0, 0.16);
+          box-shadow: inset 0px 0px 0px 2px rgba(0, 0, 0, 0.16);
+}
+
+#footer {
+  background: #333;
+  padding: 40px 0;
+}
+
+#footer .logo-block .logo {
+  pointer-events: none;
+  width: 200px;
+  padding: 20px 0;
+}
+
+#footer .logo-block h3, #footer .logo-block h5 {
+  color: #FFF;
+  margin-bottom: 10px;
+}
+
+#footer .logo-block h3 {
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+#footer .footer-content h3 {
+  border-bottom: 2px solid #555;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  color: #FFF;
+  font-weight: bold;
+  font-size: 1.5em;
+  letter-spacing: 4px;
+}
+
+#footer .footer-content a {
+  color: #CCC;
+  -webkit-transition: color 0.2s;
+  transition: color 0.2s;
+}
+
+#footer .footer-content a:hover {
+  color: #FFF;
+}
+
+#footer .footer-content li {
+  color: #CCC;
+  font-size: 1.2em;
+}
+
+#footer .footer-content li:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+#footer .footer-content i {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  vertical-align: middle;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid;
+  font-size: 0.9em;
+}
+
+#footer .footer-content .unopen {
+  pointer-events: none;
+  color: #555;
+}
+
+#footer .footer-content .unopen span {
+  color: #555;
+}
+
+#footer .footer-content .external-block h3 {
+  margin-bottom: 20px;
+}
+
+#footer .footer-content .external-block li {
+  margin-bottom: 20px;
+}
+
+body .container-full {
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+body #acountModal .modal-header {
+  border: none;
+}
+
+body #acountModal .modal-header .logo {
+  width: 160px;
+}
+
+body #acountModal .modal-header .btn-shout-down {
+  position: relative;
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  border: 1px solid #E27F88;
+  color: #E27F88;
+  background: #FFF;
+  -webkit-transition: background 0.2s;
+  transition: background 0.2s;
+}
+
+body #acountModal .modal-header .btn-shout-down:hover {
+  background: #E27F88;
+}
+
+body #acountModal .modal-header .btn-shout-down:hover span {
+  background: #FFF;
+}
+
+body #acountModal .modal-header .btn-shout-down span {
+  position: absolute;
+  width: 1.2em;
+  height: 2px;
+  background: #E27F88;
+  left: 50%;
+  top: 50%;
+  -webkit-transition: background 0.2s;
+  transition: background 0.2s;
+}
+
+body #acountModal .modal-header .btn-shout-down span:nth-child(1) {
+  -webkit-transform: translateX(-50%) rotate(45deg);
+          transform: translateX(-50%) rotate(45deg);
+}
+
+body #acountModal .modal-header .btn-shout-down span:nth-child(2) {
+  -webkit-transform: translateX(-50%) rotate(-45deg);
+          transform: translateX(-50%) rotate(-45deg);
+}
+
+body #acountModal .modal-body {
+  padding: 10px 60px 40px;
+}
+
+body #acountModal .modal-body #switch-block {
+  margin-bottom: 40px;
+}
+
+body #acountModal .modal-body #switch-block button {
+  width: 50%;
+  border: none;
+  border-bottom: 3px solid #CCC;
+  padding-bottom: 5px;
+  font-size: 1.2em;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #999;
+  background: none;
+}
+
+body #acountModal .modal-body #switch-block button.isactive {
+  pointer-events: none;
+  border-bottom: 3px solid #E27F88;
+  color: #E27F88;
+}
+
+body #acountModal .modal-body #content-block label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+body #acountModal .modal-body #content-block input {
+  display: block;
+  width: 100%;
+  border-radius: 0.5em;
+  border: 1px solid #CCC;
+  padding: 15px 10px;
+}
+
+body #acountModal .modal-body #content-block input:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+body #acountModal .modal-body #content-block #login-error, body #acountModal .modal-body #content-block #signup-error {
+  visibility: hidden;
+  margin: 10px auto;
+  text-align: center;
+  padding: 5px 40px;
+  letter-spacing: 2px;
+  color: #FFF;
+  background: -webkit-gradient(linear, left top, right top, from(rgba(212, 65, 78, 0)), color-stop(10%, #d4414e), color-stop(90%, #d4414e), to(rgba(212, 65, 78, 0)));
+  background: linear-gradient(to right, rgba(212, 65, 78, 0) 0%, #d4414e 10%, #d4414e 90%, rgba(212, 65, 78, 0) 100%);
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
+}
+
+body #acountModal .modal-body #content-block #login-error.show, body #acountModal .modal-body #content-block #signup-error.show {
+  visibility: visible;
+}
+
+body #acountModal .modal-body #content-block #login-error.error-shaking, body #acountModal .modal-body #content-block #signup-error.error-shaking {
+  -webkit-animation: error-shaking;
+          animation: error-shaking;
+  -webkit-animation-duration: 0.1s;
+          animation-duration: 0.1s;
+  -webkit-animation-iteration-count: 5;
+          animation-iteration-count: 5;
+  -webkit-animation-timing-function: linear;
+          animation-timing-function: linear;
+}
+
+@-webkit-keyframes error-shaking {
+  0% {
+    -webkit-transform: translateX(-5px);
+            transform: translateX(-5px);
+  }
+  50% {
+    -webkit-transform: translateX(5px);
+            transform: translateX(5px);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+
+@keyframes error-shaking {
+  0% {
+    -webkit-transform: translateX(-5px);
+            transform: translateX(-5px);
+  }
+  50% {
+    -webkit-transform: translateX(5px);
+            transform: translateX(5px);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+
+body #acountModal .modal-body #content-block button {
+  width: 100%;
+  border-radius: 1.2em;
+  border: 2px solid #E27F88;
+  padding: 10px;
+  font-size: 1.2em;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #E27F88;
+  background: #FFF;
+  -webkit-transition: color 0.25s,background 0.25s;
+  transition: color 0.25s,background 0.25s;
+}
+
+body #acountModal .modal-body #content-block button:hover {
+  color: #FFF;
+  background: #E27F88;
+}
+
+body .fade-enter-active,
+body .fade-leave-active {
+  opacity: 0;
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
+}
+
+body .fade-enter-from,
+body .fade-leave-to {
+  opacity: 0;
+}
+
+body .fade-enter-to,
+body .fade-leave-from {
+  opacity: 1;
+}
+/*# sourceMappingURL=main.css.map */
