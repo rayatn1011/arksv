@@ -178,17 +178,17 @@ let app = new Vue ({
           // 註冊成功
           .then(function (response) {
             console.log(response);
-            if(response.isPass === true){
+            if(response.data.isPass === true){
               // 註冊成功
               console.log('註冊成功')
               signupSuccess();
               vm.acountModalToggle();
-            } else if (response.isPass === false) {
+            } else if (response.data.isPass === false) {
               // 註冊失敗
               console.log('註冊失敗')
               errorAnimate('註冊失敗');
               return
-            } else if (response.isPass === 0) {
+            } else if (response.data.isPass === 0) {
               // 帳戶已存在
               console.log('帳戶已存在')
               errorAnimate('帳戶已存在');
