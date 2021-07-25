@@ -27,7 +27,7 @@ let app = new Vue ({
           nav:[
             {name:'伺服器規則',url:'ServerRules.html',open:true},
             {name:'交易市集',url:'Market.html',open:true},
-            {name:'交易系統',url:'',open:false},
+            {name:'抽獎系統',url:'',open:false},
           ],
           // 外部連結
           external:[
