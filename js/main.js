@@ -86,14 +86,14 @@ let app = new Vue ({
         // 開始登入
         axios.post(
             'https://townofsakura.jw.com.tw/catAssets/ArkUser/loginUserApi.php',
-            ("userid=" + loginId + "&password=" + loginPassword),
+            ('userid=' + loginId + '&password=' + loginPassword),
           )
           // 伺服器回應成功
           .then(function (response) {
             if (response.data.isPass) {
               // 登入成功
               console.log('使用者登入成功')
-              document.cookie = "tokenID=" + response.data.cookid;
+              document.cookie = 'tokenID=' + response.data.cookid;
               vm.account.islogin = response.data.isPass;
               vm.errorInfo.loginError = '';
               vm.acountModalToggle();
@@ -173,7 +173,7 @@ let app = new Vue ({
         // 開始註冊
         axios.post(
           'https://townofsakura.jw.com.tw/catAssets/ArkUser/newUserApi.php',
-          ('userid=' + signupGameId + 'username=' + signupId + 'userdcname=' + signupDiscordId + 'usermail' + signupEmail + 'password' + signupPassword)
+          ('userid=' + signupGameId + '&username=' + signupId + '&userdcname=' + signupDiscordId + '&usermail=' + signupEmail + '&password=' + signupPassword)
           )
           // 註冊成功
           .then(function (response) {
@@ -206,14 +206,14 @@ let app = new Vue ({
         function signupSuccess (){
           axios.post(
             'https://townofsakura.jw.com.tw/catAssets/ArkUser/loginUserApi.php',
-            ("userid=" + signupGameId + "&password=" + signupPassword ),
+            ('userid=' + signupGameId + '&password=' + signupPassword ),
           )
           // 伺服器回應成功
           .then(function (response) {
             if (response.data.isPass) {
               // 登入成功
               console.log('使用者登入成功')
-              document.cookie = "tokenID=" + response.data.cookid;
+              document.cookie = 'tokenID=' + response.data.cookid;
               vm.account.islogin = response.data.isPass;
               vm.errorInfo.loginError = '';
               vm.acountModalToggle();
