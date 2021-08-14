@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <div id="app">
+    <div id="app" v-cloak>
         <!-- header -->
         <header id="header">
             <div class="container-full d-flex justify-content-between align-items-center">
@@ -27,26 +27,27 @@
                         </li>
 
                     </ul>
-                    <button id="btn-login-signup" @click="acountModalToggle" v-if="!account.islogin">
+                    <button type="button" id="btn-login-signup" @click="acountModalToggle" v-if="!account.islogin">
                         登入 / 註冊
                     </button>
                     <div id="account" v-else>
-                        <button id="btn-account" @click="picked.accountBlock =!picked.accountBlock"><i class="icon-acount"></i>帳戶</button>
+                        <button type="button" id="btn-account" @click="picked.accountBlock = !picked.accountBlock">
+                            <i class="icon-acount"></i>
+                            帳戶
+                        </button>
                         <transition name="fade" mode="out-in">
-                            <div id="userModal" class="shadow" v-if="picked.accountBlock">
+                            <div id="userModal" class="shadow" v-show="picked.accountBlock">
                                 <div class="modal-content d-flex flex-column justify-content-center align-items-center">
                                     <div class="user-name">{{ account.userName }}</div>
                                     <div class="user-coin">{{ account.coin }}</div>
                                     <div class="coin-name">櫻花幣</div>
-                                    <button id="btn-logout"　@click="gotoLogout">登出</button>
+                                    <button type="button" id="btn-logout" @click="gotoLogout">登出</button>
                                 </div>
                             </div>
                         </transition>
                     </div>
                 </nav>
             </div>
-
-
         </header>
 
         <!-- main -->
@@ -71,12 +72,15 @@
                             <img src="img/index/dc-intro.jpg" alt="春櫻之城-Discord">
                         </div>
                         <div class="col-12 col-lg-4">
-                            <iframe src="https://discordapp.com/widget?id=781422087066746890&theme=dark" width="100%" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+                            <iframe src="https://discordapp.com/widget?id=781422087066746890&theme=dark" width="100%"
+                                height="500" allowtransparency="true" frameborder="0"
+                                sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
                         </div>
                         <div class="col-12 col-lg-6">
                             <h2>豐富的社群分享</h2>
                             <p>多名玩家隨時在線上，不管你是想問遊戲問題，還是想秀出你的生猛霸王龍，先進來再說！</p>
-                            <a class="link-dc" :href="linkList.external[0].url" target="_blank" :alt="linkList.external[0].name">
+                            <a class="link-dc" :href="linkList.external[0].url" target="_blank"
+                                :alt="linkList.external[0].name">
                                 <i :class="linkList.external[0].icon" class="me-3"></i>春櫻之城Discord社群</a>
                         </div>
                     </div>
@@ -92,11 +96,12 @@
                             <div class="feedback-block">
                                 <h2>匿名意見表</h2>
                                 <p>我們很重視玩家的想法，也同時保障你的隱私，若有任何的建議，都請放心地說出來。</p>
-                                <a class="link-feedback" :href="linkList.external[1].url" target="_blank" :alt="linkList.external[1].name">
+                                <a class="link-feedback" :href="linkList.external[1].url" target="_blank"
+                                    :alt="linkList.external[1].name">
                                     <i :class="linkList.external[1].icon" class="me-3"></i>說出你的想法</a>
                             </div>
                         </div>
-    
+
                     </div>
                 </div>
 
@@ -118,9 +123,9 @@
                         </div>
                         <div class="modal-body d-flex justify-content-center flex-wrap">
                             <div id="switch-block" class="d-flex justify-content-center w-100">
-                                <button @click="picked.loginBlock = true;errorInfo.signupError='' "
+                                <button type="button" @click="picked.loginBlock = true;errorInfo.signupError='' "
                                     :class="{ isactive: picked.loginBlock }">帳號登入</button>
-                                <button @click="picked.loginBlock = false;errorInfo.loginError='' "
+                                <button type="button" @click="picked.loginBlock = false;errorInfo.loginError='' "
                                     :class="{ isactive: !picked.loginBlock }">帳號註冊</button>
                             </div>
                             <div id="content-block" class="w-100">
@@ -130,10 +135,11 @@
                                         <input type="text" placeholder="請輸入遊戲ID(樣本植入體)" id="loginId">
                                         <label for="loginPassword">登入密碼</label>
                                         <input type="password" placeholder="請輸入密碼" id="loginPassword">
-                                        <div id="login-error" :class="{ show : (errorInfo.loginError!='') ,'error-shaking': (errorInfo.loginError!='') }">
+                                        <div id="login-error"
+                                            :class="{ show : (errorInfo.loginError!='') ,'error-shaking': (errorInfo.loginError!='') }">
                                             {{ errorInfo.loginError }}
                                         </div>
-                                        <button id="btn-login" @click="gotoLogin">
+                                        <button type="button" id="btn-login" @click="gotoLogin">
                                             帳號登入
                                         </button>
                                     </div>
@@ -151,7 +157,8 @@
                                         <input type="text" placeholder="輸入Discord名稱" id="signupDiscordId">
                                         <label for="signupEmail">電子郵件</label>
                                         <input type="text" placeholder="請輸入電子郵件" id="signupEmail">
-                                        <div id="signup-error" :class="{ show : (errorInfo.signupError!='') ,'error-shaking': (errorInfo.signupError!='') }">
+                                        <div id="signup-error"
+                                            :class="{ show : (errorInfo.signupError!='') ,'error-shaking': (errorInfo.signupError!='') }">
                                             {{ errorInfo.signupError }}
                                         </div>
                                         <button id="btn-signup" @click="gotoSignup">
@@ -227,7 +234,7 @@
 
     <!-- script -->
     <script src="plugin/bootstrap/bootstrap.bundle.min.js"></script>
-    <script src="plugin/vue/vue.js"></script>
+    <script src="plugin/vue/vue.global.js"></script>
     <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.10.1/qs.min.js"></script>
     <script src="plugin/axios/axios.min.js"></script>
     <script src="js/main.js"></script>

@@ -1,6 +1,5 @@
 
-let app = new Vue ({
-    el:'#app',
+Vue.createApp({
     data() {
       return {
         //使用者資訊
@@ -283,4 +282,4 @@ let app = new Vue ({
       vm.acountModal = new bootstrap.Modal(document.getElementById('acountModal'));
 
     }
-})
+}).mount('#app');
