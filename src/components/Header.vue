@@ -11,22 +11,22 @@
         </h1>
         <nav class="d-flex align-items-center">
           <ul class="d-flex align-items-center">
-            <li>
-              <router-link to="/" alt="首頁">首頁</router-link>
-            </li>
-            <li>
-              <router-link to="/ServerRules" alt="伺服器規則">伺服器規則</router-link
-              >
-            </li>
-            <li>
-              <router-link to="/Market" alt="交易市集">交易市集</router-link>
-            </li>
+            <template
+              v-for="(item, index) in getNavLinks"
+              :key="item.name + index"
+            >
+              <li v-if="item.isOpen">
+                <router-link :to="item.url" :alt="item.name">{{
+                  item.name
+                }}</router-link>
+              </li>
+            </template>
           </ul>
           <button
             type="button"
             id="btn-login-signup"
             @click="acountModalToggle"
-            v-if="!account.islogin"
+            v-if="!isLogin"
           >
             登入 / 註冊
           </button>
@@ -34,6 +34,7 @@
             <button
               type="button"
               id="btn-account"
+              :class="{'active' : picked.accountBlock}"
               @click="picked.accountBlock = !picked.accountBlock"
             >
               <i class="icon-acount"></i>
@@ -50,8 +51,8 @@
                     align-items-center
                   "
                 >
-                  <div class="user-name">{{ account.userName }}</div>
-                  <div class="user-coin">{{ account.coin }}</div>
+                  <div class="user-name">{{ getUserName }}</div>
+                  <div class="user-coin">{{ getUserCoin }}</div>
                   <div class="coin-name">櫻花幣</div>
                   <button type="button" id="btn-logout" @click="gotoLogout">
                     登出
@@ -201,13 +202,6 @@ export default {
   props: {},
   data() {
     return {
-      isLogin: false,
-      //使用者資訊
-      account: {
-        islogin: false,
-        userName: "",
-        coin: 0,
-      },
       // 使用者資訊窗
       acountModal: null,
       // 已選擇
@@ -220,37 +214,8 @@ export default {
         loginError: "",
         signupError: "",
       },
-      // 連結管理
-      linkList: {
-        // 外部連結
-        external: [
-          {
-            name: "春櫻之城Discord社群",
-            url: "https://discord.gg/XKpqdZTDna",
-            icon: "icon-discord",
-          },
-          {
-            name: "匿名意見表",
-            url: "https://forms.gle/hEosESAypVs1b3kP9",
-            icon: "icon-doc",
-          },
-        ],
-      },
     };
   },
-  mounted() {
-    let vm = this;
-
-    /* 計算Banner文字高度 */
-    // vm.BannerHeight();
-
-    /* 判斷是否登入 */
-    vm.CheckLogin();
-
-    /* 初始化Bootstrap - 登入&註冊視窗 */
-    vm.acountModal = new Modal(document.getElementById("acountModalDom"));
-  },
-
   methods: {
     /* 判斷是否登入 */
     CheckLogin() {
@@ -269,8 +234,8 @@ export default {
             if (response.data.isLogin) {
               // tokenID狀態為登入中
               console.log("使用者已登入");
-              vm.account.islogin = response.data.isLogin;
-              vm.userBasicInfo();
+              vm.$store.commit("loginSuccess");
+              vm.$store.commit("userBasicInfo");
             }
           })
           .catch(function (error) {
@@ -314,10 +279,10 @@ export default {
             // 登入成功
             console.log("使用者登入成功");
             document.cookie = "tokenID=" + response.data.cookid;
-            vm.account.islogin = response.data.isPass;
+            vm.$store.commit("loginSuccess");
             vm.errorInfo.loginError = "";
             vm.acountModalToggle();
-            vm.userBasicInfo();
+            vm.$store.commit("userBasicInfo");
           } else if (response.data.isPass == false) {
             // 帳號密碼錯誤
             console.log("帳號密碼錯誤");
@@ -353,7 +318,7 @@ export default {
           // 登出成功
           if (response.data.isPass) {
             console.log("使用者已登出");
-            vm.account.islogin = !response.data.isPass;
+            vm.$store.commit("logoutSuccess");
             vm.picked.accountBlock = false;
           }
         })
@@ -388,12 +353,12 @@ export default {
 
       // 有欄位尚未填寫
       if (
-        (signupGameId == "") |
-        (signupPassword == "") |
-        (signupDobulePassword == "") |
-        (signupId == "") |
-        (signupDiscordId == "") |
-        (signupEmail == "")
+        signupGameId == "" ||
+        signupPassword == "" ||
+        signupDobulePassword == "" ||
+        signupId == "" ||
+        signupDiscordId == "" ||
+        signupEmail == ""
       ) {
         console.log("有欄位尚未填寫");
         errorAnimate("有欄位尚未填寫");
@@ -460,10 +425,10 @@ export default {
               // 登入成功
               console.log("使用者登入成功");
               document.cookie = "tokenID=" + response.data.cookid;
-              vm.account.islogin = response.data.isPass;
+              vm.$store.commit("loginSuccess");
               vm.errorInfo.loginError = "";
               vm.acountModalToggle();
-              vm.userBasicInfo();
+              vm.$store.commit("userBasicInfo");
             } else if (response.data.isPass == false) {
               // 帳號密碼錯誤
               console.log("帳號密碼錯誤");
@@ -486,338 +451,334 @@ export default {
       }
     },
 
-    /* 基本資訊 */
-    userBasicInfo() {
-      let vm = this;
-      let tokenID = document.cookie;
-      tokenID = tokenID.slice(8);
-      vm.axios
-        .get(
-          "https://townofsakura.jw.com.tw/catAssets/ArkUser/getUserInfo.php?userid=" +
-            tokenID
-        )
-        .then(function (response) {
-          // 查詢成功
-          vm.account.coin = response.data.money;
-          vm.account.userName = response.data.name;
-        })
-        .catch(function (error) {
-          // 伺服器無回應，基本資訊請求失敗
-          console.log("伺服器無回應，基本資訊請求失敗");
-          console.log(error);
-        });
-    },
-
-    /* 計算Banner高度 */
-    BannerHeight() {
-      let banerText = document.getElementById("baner-text");
-      let headerHeight = document.getElementById("header").offsetHeight;
-      banerText.style.height = "calc(100vh - " + headerHeight + "px)";
-    },
-
     /* ModalToggle */
     acountModalToggle() {
       this.acountModal.toggle();
     },
+  },
+  computed: {
+    /* 取得登入及使用者資訊 */
+    isLogin() {
+      return this.$store.state.isLogin;
+    },
+    getUserName() {
+      return this.$store.state.userName;
+    },
+    getUserCoin() {
+      return this.$store.state.userCoin;
+    },
+    /* 取得nav清單 */
+    getNavLinks() {
+      return this.$store.state.nav;
+    },
+  },
+  created() {
+    /* 判斷是否登入 */
+    this.CheckLogin();
+  },
+  mounted() {
+    /* 初始化Bootstrap - 登入&註冊視窗 */
+    this.acountModal = new Modal(document.getElementById("acountModalDom"));
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-#header {    
-    position: sticky;    
-    top: 0;
-    left: 0;
-    #header-block {
-        background: rgba($color: #FFF, $alpha: 0.9);
-        box-shadow: 0 6px 16px rgba($color: #000, $alpha: 0.2);
-        h1 {
-            padding: 20px 0;
-            .logo-img {
-                width: 160px;
-            }
-        }
-        nav {
-            ul {
-                gap: 30px;
-                a {
-                    position: relative;
-                    padding: 5px 5px;                
-                    font-size: $fs*1.5;
-                    font-weight: bold;
-                    color: #555;
-                    letter-spacing: 2px;
-                    transition: color 0.3s;
-                    &::after{
-                        position: absolute;
-                        content: "";
-                        top: 100%;
-                        left: 0;
-                        width: 100%;
-                        height: 2px;
-                        background: linear-gradient(to right, $c-main 50%, transparent 50%);
-                        background-size: 201% 100%;
-                        background-position:right;
-                        transition: background 0.4s;
-                    }
-                    &:hover{
-                        color: $c-main;
-                        &::after{
-                            background-position:left;
-                        }
-                    }
-                }
-                .unopen {
-                    position: relative;
-                    pointer-events: none;
-                    color: #999;
-                    &::after{
-                        position: absolute;
-                        width: 100%;
-                        top: 80%;
-                        content: "(暫未啟用)";
-                        font-size: $fs*0.7;
-                        font-weight: normal;
-                        text-align: center;
-    
-    
-                    }
-                }
-            }
-            #btn-login-signup,#btn-account {
-                border-radius: $fs*3;
-                margin-left: 60px;
-                padding: 10px 20px;
-                font-size: $fs*1.5;
-                font-weight: bold;
-                letter-spacing: 2px;
-                transition: background 0.25s;
-                &:hover {
-                    background: $c-main-dark;
-                }
-            }
-            #btn-login-signup {
-                border: none;
-                color: #FFF;
-                background: $c-main;
-            }
-            #account {
-                position: relative;
-                #btn-account {
-                    border: 3px solid $c-main;
-                    font-size: $fs*1.2;
-                    color: $c-main;
-                    background: transparent;
-                    transition: color 0.25s, background 0.25s;
-                    &:hover {
-                        color: #FFF;
-                        background: $c-main;
-                    }
-                    i {
-                        font-size: $fs*1.1;
-                        vertical-align: baseline;
-                        margin-right: 4px;
-                    }         
-                }
-                #userModal {
-                    width: 220px;
-                    position: absolute;
-                    right: 0;
-                    top: calc(100% + 20px);
-                    .modal-content {
-                        position: relative;
-                        border-radius: $fs*0.5;
-                        border: 2px solid #555;
-                        padding: 20px 0 10px;
-                        background: #333;
-                        .user-name {
-                            width: 100%;
-                            border-bottom: 2px solid #555;
-                            margin-bottom: 20px;
-                            padding-bottom: 10px;
-                            font-size: $fs*1.5;
-                            font-weight: bold;
-                            text-align: center;
-                            color: $c-main;
-                            &::after {
-                                content: "";
-                                position: absolute;
-                                right: 32px;
-                                top: -14px;
-                                width: 0;
-                                height: 0;
-                                border-left: 10px solid transparent;
-                                border-right: 10px solid transparent;
-                                border-bottom: 14px solid #333;
-                            }
-                        }
-                        .user-coin {                        
-                            font-size: $fs*2.5;
-                            font-weight: bold;   
-                            color: #FFF;                 
-                        }
-                        .coin-name {
-                            font-size: $fs*1.2;
-                            color: #999;
-                        }
-                        #btn-logout {                        
-                            border-radius: $fs*2;
-                            border: 3px solid $c-main;
-                            margin-top: 20px;
-                            padding: 5px 20px;
-                            font-size: $fs*1.2;
-                            font-weight: bold;
-                            letter-spacing: 2px;
-                            color: $c-main;
-                            background: transparent;
-                            transition: color 0.25s,background 0.25s;
-                            &:hover {
-                                color: #FFF;
-                                background: $c-main;
-                            }
-                        }
-                    }
-                } 
-            }
-        }
+#header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  #header-block {
+    background: rgba($color: #fff, $alpha: 0.9);
+    box-shadow: 0 6px 16px rgba($color: #000, $alpha: 0.2);
+    h1 {
+      padding: 8px 0;
+      .logo-img {
+        width: 160px;
+      }
     }
+    nav {
+      ul {
+        gap: 30px;
+        a {
+          position: relative;
+          padding: 5px 5px;
+          font-size: $fs * 1.5;
+          font-weight: bold;
+          color: #555;
+          letter-spacing: 2px;
+          transition: color 0.3s;
+          &::after {
+            position: absolute;
+            content: "";
+            top: 100%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, $c-main 50%, transparent 50%);
+            background-size: 201% 100%;
+            background-position: right;
+            transition: background 0.4s;
+          }
+          &:hover {
+            color: $c-main;
+            &::after {
+              background-position: left;
+            }
+          }
+        }
+        .unopen {
+          position: relative;
+          pointer-events: none;
+          color: #999;
+          &::after {
+            position: absolute;
+            width: 100%;
+            top: 80%;
+            content: "(暫未啟用)";
+            font-size: $fs * 0.7;
+            font-weight: normal;
+            text-align: center;
+          }
+        }
+      }
+      #btn-login-signup,
+      #btn-account {
+        border-radius: $fs * 3;
+        margin-left: 60px;
+        padding: 10px 20px;
+        font-size: $fs * 1.5;
+        font-weight: bold;
+        letter-spacing: 2px;
+        transition: background 0.25s;
+        &:hover {
+          background: $c-main-dark;
+        }
+      }
+      #btn-login-signup {
+        border: none;
+        color: #fff;
+        background: $c-main;
+      }
+      #account {
+        position: relative;
+        #btn-account {
+          border: 3px solid $c-main;
+          font-size: $fs * 1.2;
+          color: $c-main;
+          background: transparent;
+          transition: color 0.25s, background 0.25s;
+          &:hover,&.active {
+            color: #fff;
+            background: $c-main;
+          }
+          i {
+            font-size: $fs * 1.1;
+            vertical-align: baseline;
+            margin-right: 4px;
+          }
+        }
+        #userModal {
+          width: 220px;
+          position: absolute;
+          right: 0;
+          top: calc(100% + 20px);
+          .modal-content {
+            position: relative;
+            border-radius: $fs * 0.5;
+            border: 2px solid #555;
+            padding: 20px 0 10px;
+            background: #333;
+            .user-name {
+              width: 100%;
+              border-bottom: 2px solid #555;
+              margin-bottom: 20px;
+              padding-bottom: 10px;
+              font-size: $fs * 1.5;
+              font-weight: bold;
+              text-align: center;
+              color: $c-main;
+              &::after {
+                content: "";
+                position: absolute;
+                right: 32px;
+                top: -14px;
+                width: 0;
+                height: 0;
+                border-left: 10px solid transparent;
+                border-right: 10px solid transparent;
+                border-bottom: 14px solid #333;
+              }
+            }
+            .user-coin {
+              font-size: $fs * 2.5;
+              font-weight: bold;
+              color: #fff;
+            }
+            .coin-name {
+              font-size: $fs * 1.2;
+              color: #999;
+            }
+            #btn-logout {
+              border-radius: $fs * 2;
+              border: 3px solid $c-main;
+              margin-top: 20px;
+              padding: 5px 20px;
+              font-size: $fs * 1.2;
+              font-weight: bold;
+              letter-spacing: 2px;
+              color: $c-main;
+              background: transparent;
+              transition: color 0.25s, background 0.25s;
+              &:hover {
+                color: #fff;
+                background: $c-main;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 #acountModalDom {
-    .modal-header {
+  .modal-header {
+    border: none;
+    .logo {
+      width: 160px;
+    }
+    .btn-shout-down {
+      position: relative;
+      width: $fs * 2;
+      height: $fs * 2;
+      border-radius: 50%;
+      border: 1px solid $c-main;
+      color: $c-main;
+      background: #fff;
+      transition: background 0.2s;
+      &:hover {
+        background: $c-main;
+        span {
+          background: #fff;
+        }
+      }
+      span {
+        position: absolute;
+        width: $fs * 1.2;
+        height: 2px;
+        background: $c-main;
+        left: 50%;
+        top: 50%;
+        transition: background 0.2s;
+
+        &:nth-child(1) {
+          transform: translateX(-50%) rotate(45deg);
+        }
+
+        &:nth-child(2) {
+          transform: translateX(-50%) rotate(-45deg);
+        }
+      }
+    }
+  }
+
+  .modal-body {
+    padding: 10px 60px 40px;
+
+    #switch-block {
+      margin-bottom: 40px;
+
+      button {
+        width: 50%;
         border: none;
-        .logo {
-            width: 160px;
-        }
-        .btn-shout-down {
-            position: relative;
-            width: $fs*2;
-            height: $fs*2;
-            border-radius: 50%;
-            border: 1px solid $c-main;
-            color: $c-main;
-            background: #FFF;
-            transition: background 0.2s;
-            &:hover {
-                background: $c-main;
-                span {
-                    background: #FFF;
-                }
-            }
-            span {
-                position: absolute;
-                width: $fs*1.2;
-                height: 2px;
-                background: $c-main;
-                left: 50%;
-                top: 50%;
-                transition: background 0.2s;
+        border-bottom: 3px solid #ccc;
+        padding-bottom: 5px;
+        font-size: $fs * 1.2;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: #999;
+        background: none;
 
-                &:nth-child(1) {
-                    transform: translateX(-50%) rotate(45deg);
-                }
-
-                &:nth-child(2) {
-                    transform: translateX(-50%) rotate(-45deg);
-                }
-            }
+        &.isactive {
+          pointer-events: none;
+          border-bottom: 3px solid $c-main;
+          color: $c-main;
         }
+      }
     }
 
-    .modal-body {
-        padding: 10px 60px 40px;
+    #content-block {
+      label {
+        display: block;
+        margin-bottom: 4px;
+        font-size: $fs * 0.9;
+        color: #555;
+      }
 
-        #switch-block {
-            margin-bottom: 40px;
+      input {
+        display: block;
+        width: 100%;
+        border-radius: $fs * 0.5;
+        border: 1px solid #ccc;
+        padding: 15px 10px;
 
-            button {
-                width: 50%;
-                border: none;
-                border-bottom: 3px solid #CCC;
-                padding-bottom: 5px;
-                font-size: $fs*1.2;
-                font-weight: bold;
-                letter-spacing: 2px;
-                color: #999;
-                background: none;
-
-                &.isactive {
-                    pointer-events: none;
-                    border-bottom: 3px solid $c-main;
-                    color: $c-main;
-                }
-            }
+        &:not(:last-child) {
+          margin-bottom: 20px;
         }
+      }
 
-        #content-block {
-            label {
-                display: block;
-                margin-bottom: 4px;
-                font-size: $fs*0.9;
-                color: #555;
-            }
-
-            input {
-                display: block;
-                width: 100%;
-                border-radius: $fs*0.5;
-                border: 1px solid #CCC;
-                padding: 15px 10px;
-
-                &:not(:last-child) {
-                    margin-bottom: 20px;
-                }
-            }
-
-            #login-error,#signup-error {
-                visibility: hidden;
-                margin: 10px auto;
-                text-align: center;
-                padding: 5px 40px;
-                letter-spacing: 2px;
-                color: #FFF;
-                background: $c-error-linear;
-                transition: opacity 0.3s;
-                &.show {
-                    visibility: visible;
-                }
-                &.error-shaking {
-                    animation: error-shaking;
-                    animation-duration: 0.1s;
-                    animation-iteration-count:5;
-                    animation-timing-function: linear;
-
-                    @keyframes error-shaking {
-                        0% {
-                            transform: translateX(-5px);
-                        }
-                        50% {
-                            transform: translateX(5px);
-                        }
-                        100% {
-                            transform: translateX(0);
-                        }
-                    }
-                }
-            }
-
-            button {
-                width: 100%;
-                border-radius: $fs*1.2;
-                border: 2px solid $c-main;
-                padding: 10px;
-                font-size: $fs*1.2;
-                font-weight: bold;
-                letter-spacing: 2px;
-                color: $c-main;
-                background: #FFF;
-                transition: color 0.25s,background 0.25s;
-                &:hover {
-                    color: #FFF;
-                    background: $c-main;
-                }
-            }
+      #login-error,
+      #signup-error {
+        visibility: hidden;
+        margin: 10px auto;
+        text-align: center;
+        padding: 5px 40px;
+        letter-spacing: 2px;
+        color: #fff;
+        background: $c-error-linear;
+        transition: opacity 0.3s;
+        &.show {
+          visibility: visible;
         }
+        &.error-shaking {
+          animation: error-shaking;
+          animation-duration: 0.1s;
+          animation-iteration-count: 5;
+          animation-timing-function: linear;
+
+          @keyframes error-shaking {
+            0% {
+              transform: translateX(-5px);
+            }
+            50% {
+              transform: translateX(5px);
+            }
+            100% {
+              transform: translateX(0);
+            }
+          }
+        }
+      }
+
+      button {
+        width: 100%;
+        border-radius: $fs * 1.2;
+        border: 2px solid $c-main;
+        padding: 10px;
+        font-size: $fs * 1.2;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: $c-main;
+        background: #fff;
+        transition: color 0.25s, background 0.25s;
+        &:hover {
+          color: #fff;
+          background: $c-main;
+        }
+      }
     }
+  }
 }
 </style>

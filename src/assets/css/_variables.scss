@@ -1,7 +1,7 @@
 // 變數
-$fs: 1em;
-$c-main: #E27F88;
-$c-main-dark: #BE6B72;
+$fs: 1rem;
+$c-main: #E24973;
+$c-main-dark: $c-main*0.9;
 $c-main-linear: linear-gradient(to right, 
 rgba($color: $c-main, $alpha: 0) 0% ,
 rgba($color: $c-main, $alpha: 1) 10% ,

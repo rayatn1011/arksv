@@ -1,45 +1,34 @@
 <template>
-  <headerComponent></headerComponent>
+  <header-component></header-component>
+  <!-- <transition name="slow-fade"> -->
   <router-view></router-view>
+  <!-- </transition> -->
+  <footer-component></footer-component>
 </template>
 
 <script>
 import headerComponent from "@/components/Header.vue";
+import footerComponent from "@/components/Footer.vue";
 
 export default {
   components: {
     headerComponent,
+    footerComponent,
   },
   data() {
-    return {
-      //是否登入
-      isLogin: false,
-      //外部連結
-      externalLinks: [
-        {
-          name: "春櫻之城Discord社群",
-          url: "https://discord.gg/XKpqdZTDna",
-          icon: "icon-discord",
-        },
-        {
-          name: "匿名意見表",
-          url: "https://forms.gle/hEosESAypVs1b3kP9",
-          icon: "icon-doc",
-        },
-      ],
-    };
+    return {};
   },
-
-  mounted() {},
-
   methods: {},
+  computed: {},
+  watch: {},
+  created() {},
+  mounted() {},
 };
 </script>
 
 <style lang="scss">
 // import fonts
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap");
 // global setting
 body {
   * {
@@ -47,10 +36,6 @@ body {
     box-shadow: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    &:focus {
-      outline: 0;
-      box-shadow: 0 0 0 0.2rem rgba($color: $c-main, $alpha: 0.6);
-    }
   }
   [v-cloak] {
     display: none;
@@ -142,7 +127,9 @@ body {
     font-size: 100%;
     font: inherit;
     color: #333;
-    font-family: "Noto Sans TC", sans-serif;
+    font-family: "Noto Sans TC", "Noto Sans SC", "Microsoft JhengHei",
+      "Heiti TC", "WenQuanYi Zen Hei", sans-serif;
+    word-wrap: break-word;
   }
   ul,
   ol {
@@ -151,6 +138,10 @@ body {
   a {
     text-decoration: none;
     display: inline-block;
+    transition: color 0.2s;
+    &:hover {
+      color: $c-main;
+    }
   }
   ::placeholder {
     color: #999;
@@ -162,30 +153,65 @@ body {
     color: inherit;
     font-size: 1.5em;
   }
+  h2 {
+    font-size: $fs * 2;
+    font-weight: bold;
+    letter-spacing: 2px;
+  }
+  h3 {
+    font-size: $fs * 1.5;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+  h4 {
+    font-size: $fs * 1.2;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+}
+.bg-f5 {
+  background: #f5f5f5;
 }
 
 // cover plugin class
-#app {
-  .container-full {
-    margin-left: 40px;
-    margin-right: 40px;
-  }
-  // vue
-  .fade-enter-active,
-  .fade-leave-active {
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
+.container-full {
+  margin-left: 40px;
+  margin-right: 40px;
+}
+// vue
+.fade-enter-active,
+.fade-leave-active {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
 
-  .fade-enter-from,
-  .fade-leave-to {
-    opacity: 0;
-  }
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 
-  .fade-enter-to,
-  .fade-leave-from {
-    opacity: 1;
-  }
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
+
+.slow-fade-enter-active,
+.slow-fade-leave-active {
+  opacity: 0;
+  transition: opacity 1.25s;
+}
+
+.slow-fade-enter-from,
+.slow-fade-leave-to {
+  opacity: 0;
+}
+
+.slow-fade-enter-to,
+.slow-fade-leave-from {
+  opacity: 1;
+}
+a.router-link-active {
+  color: $c-main;
 }
 </style>
 
