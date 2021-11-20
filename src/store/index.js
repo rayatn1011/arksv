@@ -8,6 +8,7 @@ export default createStore({
     isLogin: false, // 是否登入
     userName: '', // 使用者名稱
     userCoin: '', // 使用者餘額
+    userId: '', //使用者ID
     // 外部連結
     external: [{
         name: '春櫻之城Discord社群',
@@ -21,7 +22,7 @@ export default createStore({
       },
     ],
     // 網站連結
-    nav:[{
+    nav: [{
         name: '首頁',
         url: '/',
         isOpen: true
@@ -36,7 +37,35 @@ export default createStore({
         url: '/Market',
         isOpen: true
       }
-    ]
+    ],
+    // 商店連結
+    markeLink: [{
+        name: "社群市集",
+        url: "/Market/Community/1"
+      },
+      {
+        name: "官方市集",
+        url: "/Market/Official/1"
+      },
+      {
+        name: "個人專區",
+        url: "/Market/UserArea/AddNew"
+      }
+    ],
+    // 個人專區連結
+    userAreaLink: [{
+      name: "新商品上架",
+      url: "/Market/UserArea/AddNew"
+    }, {
+      name: "上架中的商品",
+      url: "/Market/UserArea/Launched"
+    }, {
+      name: "被預定的商品",
+      url: "/Market/UserArea/Booked"
+    }, {
+      name: "交易紀錄",
+      url: "/Market/UserArea/Record"
+    }]
   },
   mutations: {
     // 切換登入狀態
@@ -58,6 +87,8 @@ export default createStore({
         )
         .then(function (res) {
           // 查詢成功
+          console.log("基本資訊查詢成功");
+          state.userId = res.data.gameid;
           state.userCoin = res.data.money;
           state.userName = res.data.name;
         })

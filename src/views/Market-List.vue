@@ -67,15 +67,15 @@
             <div class="title">{{ item.title }}</div>
             <div class="dcname">賣家：{{ item.dcname }}</div>
             <div class="message">{{ item.message }}</div>
-            <div class="price" v-if="item.money">
-              <div class="mt-2"><span>櫻花幣</span>${{ item.money }}</div>
-            </div>
-            <div class="exchange" v-if="item.money_item">
-              <div class="mt-2">
+            <div class="order">
+              <div class="price" v-if="item.money">
+                <span>櫻花幣</span>${{ item.money }}
+              </div>
+              <div class="exchange" v-if="item.money_item">
                 <span>自訂價格：</span><br />{{ item.money_item }}
               </div>
+              <button type="button" class="btn-order">下訂</button>
             </div>
-            <button type="button" class="btn-order">下訂</button>
           </div>
         </li>
       </template>
@@ -92,9 +92,6 @@
             >最前頁
           </router-link>
         </li>
-        <!-- <li class="page-item">
-            <a class="page-link" href="#" @click.prevent>... </a>
-          </li> -->
 
         <template v-for="(item, index) in pageBtnData" :key="index">
           <li class="page-item" :class="{ active: item == picked.nowPage }">
@@ -106,8 +103,6 @@
             >
           </li>
         </template>
-        <!-- <router-link class="page-link" :to="{}" :alt="'前往分頁'+item">{{item}}</router-link> -->
-
         <li
           class="page-item"
           :class="{
@@ -139,7 +134,7 @@
       <div class="modal-content">
         <template v-if="ProductImgModalItem != ''">
           <div class="modal-header px-3 py-2">
-            <h5 class="modal-title">{{ ProductImgModalItem.title }}</h5>
+            <h5 class="modal-title me-4">{{ ProductImgModalItem.title }}</h5>
             <button
               type="button"
               class="btn-close"
@@ -490,10 +485,11 @@ export default {
     .message {
       color: $c-main;
     }
-    .price {
+    .order {
       margin-top: auto;
-      text-align: right;
-      > div {
+      .price {
+        margin-top: 8px;
+        text-align: right;
         font-size: $fs * 1.5;
         font-weight: bold;
         color: #555;
@@ -503,10 +499,8 @@ export default {
           margin-right: 8px;
         }
       }
-    }
-    .exchange {
-      margin-top: auto;
-      > div {
+      .exchange {
+        margin-top: 8px;
         font-weight: bold;
         color: #555;
         > span {
@@ -514,18 +508,21 @@ export default {
           color: #777;
         }
       }
-    }
-    .btn-order {
-      border-radius: 4px;
-      border: 1px solid $c-main;
-      padding: 4px 0;
-      background: linear-gradient(to left, #fff 50%, $c-main 50%) right;
-      background-size: 201%;
-      color: $c-main;
-      transition: color 0.2s, background-position 0.4s;
-      &:hover {
-        color: #fff;
-        background-position: left;
+      .btn-order {
+        display: block;
+        width: 100%;
+        border-radius: 4px;
+        border: 1px solid $c-main;
+        margin-top: 8px;
+        padding: 4px 0;
+        background: linear-gradient(to left, #fff 50%, $c-main 50%) right;
+        background-size: 201%;
+        color: $c-main;
+        transition: color 0.2s, background-position 0.4s;
+        &:hover {
+          color: #fff;
+          background-position: left;
+        }
       }
     }
   }

@@ -21,8 +21,8 @@ export default {
   methods: {},
   computed: {},
   watch: {},
-  created() {},
-  mounted() {},
+  created() { },
+  mounted() { },
 };
 </script>
 
@@ -172,7 +172,9 @@ body {
 .bg-f5 {
   background: #f5f5f5;
 }
-
+.fs-7 {
+  font-size: 0.9rem;
+}
 // cover plugin class
 .container-full {
   margin-left: 40px;
@@ -214,4 +216,3 @@ a.router-link-active {
   color: $c-main;
 }
 </style>
-

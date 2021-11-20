@@ -91,16 +91,7 @@ export default {
           alt: "交易系統新上線！",
         },
       ],
-      markeLink: [
-        {
-          url: "/Market/Community/1",
-          name: "社群市集",
-        },
-        {
-          url: "/Market/Official/1",
-          name: "官方市集",
-        },
-      ],
+      markeLink: [],
     };
   },
   methods: {
@@ -136,7 +127,8 @@ export default {
     },
   },
   created() {
-    this.replacePath(this.$route.path);
+    this.markeLink =  this.$store.state.markeLink;
+    this.replacePath(this.$route.path);    
   },
   mounted() {},
 };
@@ -183,6 +175,20 @@ export default {
   margin-right: 16px;
   min-height: 60vh;
   padding-top: 50px;
+  li {
+    &:last-child {
+      position: relative;
+      margin-top: 32px;
+      &::after {
+        position: absolute;
+        content: "";
+        height: 1px;
+        width: 100%;
+        background-color: #EEE;
+        left: 0;
+      }
+      
+    }
   a {
     border-bottom: 3px solid transparent;
     margin: 8px 32px 8px;
@@ -200,6 +206,7 @@ export default {
       color: $c-main;
       border-bottom: 3px solid $c-main;
     }
+  }
   }
 }
 // 篩選商品列表

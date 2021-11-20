@@ -25,6 +25,27 @@ const routes = [{
         path: 'Official/:pageId',
         component: () => import('../views/Market-List.vue')
       },{
+        path: 'userArea',
+        component: () => import('../views/UserArea.vue'),
+        children:[
+          {
+            path: 'AddNew',
+            component: () => import('../views/UserArea-AddNew.vue'),
+          },
+          {
+            path: 'Launched',
+            component: () => import('../views/UserArea-Launched.vue'),
+          },
+          {
+            path: 'Booked',
+            component: () => import('../views/UserArea-Booked.vue'),
+          },
+          {
+            path: 'Record',
+            component: () => import('../views/UserArea-Record.vue'),
+          },
+        ]
+      },{
         path: '/:pathMatch(.*)*',
         name: 'NotFoundPageId',
         component: () => import('../views/NotFound.vue')

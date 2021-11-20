@@ -31,10 +31,15 @@
             登入 / 註冊
           </button>
           <div id="account" v-else>
+            <div
+              id="accountBlockModal"
+              v-if="picked.accountBlock"
+              @click="picked.accountBlock = false"
+            ></div>
             <button
               type="button"
               id="btn-account"
-              :class="{'active' : picked.accountBlock}"
+              :class="{ active: picked.accountBlock }"
               @click="picked.accountBlock = !picked.accountBlock"
             >
               <i class="icon-acount"></i>
@@ -121,12 +126,14 @@
                   type="text"
                   placeholder="請輸入遊戲ID(樣本植入體)"
                   id="loginId"
+                  autocomplete="off"
                 />
                 <label for="loginPassword">登入密碼</label>
                 <input
                   type="password"
                   placeholder="請輸入密碼"
                   id="loginPassword"
+                  autocomplete="off"
                 />
                 <div
                   id="login-error"
@@ -161,19 +168,26 @@
                   id="signupPasswordDobulecheck"
                 />
                 <label for="signupUserName">用戶名稱</label>
-                <input type="text" placeholder="請輸入用戶名稱" id="signupId" />
+                <input
+                  type="text"
+                  placeholder="請輸入用戶名稱"
+                  id="signupId"
+                  autocomplete="off"
+                />
 
                 <label for="signupDiscordId">Discord名稱</label>
                 <input
                   type="text"
                   placeholder="輸入Discord名稱"
                   id="signupDiscordId"
+                  autocomplete="off"
                 />
                 <label for="signupEmail">電子郵件</label>
                 <input
                   type="text"
                   placeholder="請輸入電子郵件"
                   id="signupEmail"
+                  autocomplete="off"
                 />
                 <div
                   id="signup-error"
@@ -229,7 +243,7 @@ export default {
             "https://townofsakura.jw.com.tw/catAssets/ArkUser/isUserLogining.php?enid=" +
               tokenID
           )
-          .then(function (response) {
+          .then( function (response) {
             // 伺服器回應成功
             if (response.data.isLogin) {
               // tokenID狀態為登入中
@@ -278,7 +292,7 @@ export default {
           if (response.data.isPass) {
             // 登入成功
             console.log("使用者登入成功");
-            document.cookie = "tokenID=" + response.data.cookid;
+            document.cookie = `tokenID=${response.data.cookid}`;
             vm.$store.commit("loginSuccess");
             vm.errorInfo.loginError = "";
             vm.acountModalToggle();
@@ -319,6 +333,7 @@ export default {
           if (response.data.isPass) {
             console.log("使用者已登出");
             vm.$store.commit("logoutSuccess");
+            document.cookie = "tokenID=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
             vm.picked.accountBlock = false;
           }
         })
@@ -472,7 +487,7 @@ export default {
       return this.$store.state.nav;
     },
   },
-  created() {
+  async created() {
     /* 判斷是否登入 */
     this.CheckLogin();
   },
@@ -522,7 +537,8 @@ export default {
             background-position: right;
             transition: background 0.4s;
           }
-          &:hover {
+          &:hover,
+          &.router-link-active {
             color: $c-main;
             &::after {
               background-position: left;
@@ -570,7 +586,8 @@ export default {
           color: $c-main;
           background: transparent;
           transition: color 0.25s, background 0.25s;
-          &:hover,&.active {
+          &:hover,
+          &.active {
             color: #fff;
             background: $c-main;
           }
@@ -579,6 +596,14 @@ export default {
             vertical-align: baseline;
             margin-right: 4px;
           }
+        }
+        #accountBlockModal {
+          position: fixed;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background: transparent;
         }
         #userModal {
           width: 220px;
