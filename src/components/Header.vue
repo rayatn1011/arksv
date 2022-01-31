@@ -240,7 +240,7 @@ export default {
         tokenID = tokenID.slice(8);
         vm.axios
           .get(
-            "https://townofsakura.jw.com.tw/catAssets/ArkUser/isUserLogining.php?enid=" +
+            "/catAssets/ArkUser/isUserLogining.php?enid=" +
               tokenID
           )
           .then( function (response) {
@@ -284,7 +284,7 @@ export default {
       // 開始登入
       vm.axios
         .post(
-          "https://townofsakura.jw.com.tw/catAssets/ArkUser/loginUserApi.php",
+          "/catAssets/ArkUser/loginUserApi.php",
           "userid=" + loginId + "&password=" + loginPassword
         )
         // 伺服器回應成功
@@ -325,7 +325,7 @@ export default {
       tokenID = tokenID.slice(8);
       vm.axios
         .get(
-          "https://townofsakura.jw.com.tw/catAssets/ArkUser/outUserApi.php?enid=" +
+          "/catAssets/ArkUser/outUserApi.php?enid=" +
             tokenID
         )
         .then(function (response) {
@@ -388,7 +388,7 @@ export default {
       // 開始註冊
       vm.axios
         .post(
-          "https://townofsakura.jw.com.tw/catAssets/ArkUser/newUserApi.php",
+          "/catAssets/ArkUser/newUserApi.php",
           "userid=" +
             signupGameId +
             "&username=" +
@@ -431,7 +431,7 @@ export default {
       function signupSuccess() {
         vm.axios
           .post(
-            "https://townofsakura.jw.com.tw/catAssets/ArkUser/loginUserApi.php",
+            "/catAssets/ArkUser/loginUserApi.php",
             "userid=" + signupGameId + "&password=" + signupPassword
           )
           // 伺服器回應成功

@@ -83,7 +83,7 @@ export default createStore({
       let tokenID = document.cookie;
       tokenID = tokenID.slice(8);
       axios.get(
-          `https://townofsakura.jw.com.tw/catAssets/ArkUser/getUserInfo.php?userid=${tokenID}`
+          `/catAssets/ArkUser/getUserInfo.php?userid=${tokenID}`
         )
         .then(function (res) {
           // 查詢成功

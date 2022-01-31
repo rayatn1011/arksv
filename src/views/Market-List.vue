@@ -189,11 +189,11 @@ export default {
       switch (url) {
         case "Community":
           this.marketApi =
-            "https://townofsakura.jw.com.tw/catAssets/catTan/getTanListApi.php";
+            "/catAssets/catTan/getTanListApi.php";
           break;
         case "Official":
           this.marketApi =
-            "https://townofsakura.jw.com.tw/catAssets/catTan/getRootTanListApi.php";
+            "/catAssets/catTan/getRootTanListApi.php";
           break;
       }
     },

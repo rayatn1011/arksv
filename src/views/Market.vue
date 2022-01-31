@@ -107,7 +107,7 @@ export default {
 
       this.axios({
         method: "post",
-        url: "https://townofsakura.jw.com.tw/catAssets/catTan/newTanApi.php",
+        url: "/catAssets/catTan/newTanApi.php",
         headers: { "Content-Type": "multipart/form-data" },
         data: formData,
       }).then((res) => {
