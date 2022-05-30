@@ -1,7 +1,7 @@
 <script setup>
 const carouselList = [
   {
-    src: './src/assets/image/中文3.jpg',
+    src: new URL('../../assets/image/中文3.jpg', import.meta.url).href,
     label: '交易系統新上線！',
   },
 ]

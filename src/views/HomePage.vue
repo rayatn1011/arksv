@@ -1,7 +1,7 @@
 <script setup>
 const bannerList = ref([
   {
-    backgroundImage: './src/assets/image/中文3.jpg',
+    backgroundImage: new URL('../assets/image/中文3.jpg', import.meta.url).href,
     title: '春櫻之城官方網站',
     subTitle: '櫻花幣月卡已上線',
   },
