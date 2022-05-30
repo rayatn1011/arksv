@@ -1,0 +1,1 @@
+import{_ as r}from"./MarketList.165c910f.js";import{o,g as t}from"./index.76a9201e.js";import"./el-scrollbar.559b41aa.js";import"./el-card.6166231d.js";import"./index2.6b7e3edd.js";import"./debounce.e3dc74f1.js";const n={name:"MarketOfficial",setup(a){return(e,m)=>(o(),t(r))}};export{n as default};
